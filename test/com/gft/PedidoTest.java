@@ -5,6 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.gft.desconto.CalculadoraDescontoPrimeiraFaixa;
+import com.gft.desconto.CalculadoraDescontoSegundaFaixa;
+import com.gft.desconto.CalculadoraDescontoTerceiraFaixa;
+import com.gft.desconto.CalculadoraFaixaDesconto;
+import com.gft.desconto.CalculadoraSemDesconto;
+
 
 public class PedidoTest {
 
@@ -12,7 +18,12 @@ public class PedidoTest {
 
 	@Before
 	public void setup() {
-		pedido = new Pedido();
+		CalculadoraFaixaDesconto calculadoraFaixaDesconto =
+					new CalculadoraDescontoTerceiraFaixa(
+							new CalculadoraDescontoSegundaFaixa(
+									new CalculadoraDescontoPrimeiraFaixa( 
+											new CalculadoraSemDesconto(null))));
+		pedido = new Pedido(calculadoraFaixaDesconto);
 	}
 
 	protected void assertResumoPedido(double valorTotal, double desconto) {
