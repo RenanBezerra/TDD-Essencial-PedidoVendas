@@ -16,8 +16,11 @@ public class PedidoTest {
 
 	protected void assertResumoPedido(double valorTotal, double desconto) {
 		ResumoPedido resumoPedido = pedido.total().resumo();
-		assertEquals(valorTotal, resumoPedido.getValorTotal(), 0.001);
-		assertEquals(desconto, resumoPedido.getDesconto(), 0.0001);
+
+//		assertEquals(valorTotal, resumoPedido.getValorTotal(), 0.001);
+//		assertEquals(desconto, resumoPedido.getDesconto(), 0.0001);
+		assertEquals(new ResumoPedido(valorTotal, desconto), resumoPedido);
+
 	}
 
 	@Test
@@ -33,6 +36,7 @@ public class PedidoTest {
 	@Test
 	public void deveCalcularResumoParaItemSemDesconto() throws Exception {
 		pedido.comItem(5.0, 5);
+
 		assertResumoPedido(25.0, 0.0);
 	}
 
@@ -64,4 +68,8 @@ public class PedidoTest {
 		assertResumoPedido(1200.0, 96.0);
 	}
 
+	@Test(expected = QuantidadeItensInvalidaException.class)
+	public void naoAceitarPedidosComItensQuantidadesNegativas() throws Exception {
+		pedido.comItem(0.0, -10);
+	}
 }
